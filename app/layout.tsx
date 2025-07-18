@@ -6,6 +6,8 @@ import SupabaseProvider from "@/providers/SupabaseProvider";
 import UserProvider from "@/providers/userProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ToasterProvider from "@/providers/ToasterProvider";
+import getSongsByUserId from "@/actions/getSongsByUserId";
+import Player from "@/components/Player";
 
 const font = Figtree({
   subsets: ["latin"],
@@ -17,11 +19,13 @@ export const metadata: Metadata = {
   description: "Listen to your favorite music with this Spotify clone built using Next.js and Tailwind CSS.",
 };
 
-export default function RootLayout({
+export const revalidate = 0; // Disable revalidation for this layout
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userSongs = await getSongsByUserId();
   return (
     <html lang="en">
       <body className={`${font.variable}`}>
@@ -29,9 +33,10 @@ export default function RootLayout({
         <SupabaseProvider>
           <UserProvider>
             <ModalProvider />
-            <Sidebar>
+            <Sidebar songs={userSongs}>
               {children}
             </Sidebar>
+            <Player />
           </UserProvider>
         </SupabaseProvider>
       </body>

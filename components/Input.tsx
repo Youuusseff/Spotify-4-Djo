@@ -15,7 +15,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         <input
             type={type}
             aria-label="title"
-            className={twMerge(`                flex
+            className={twMerge(`
+                flex
                 w-full
                 rounded-md
                 bg-neutral-700
