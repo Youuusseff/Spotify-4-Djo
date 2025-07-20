@@ -62,10 +62,10 @@ const Header: React.FC<HeaderProps>=({
                     md:flex
                     gap-x-2
                     items-center">
-                        <button aria-label="left" onClick={()=>router.back} className="rounded-full flex items-center justify-center bg-black hover:opacity-75 transition" >
+                        <button aria-label="left" onClick={()=>router.back()} className="rounded-full flex items-center justify-center bg-black hover:opacity-75 transition" >
                             <RxCaretLeft className="text-white" size={35}/>
                         </button>
-                        <button aria-label="right" onClick={()=> router.forward} className="rounded-full flex items-center justify-center bg-black hover:opacity-75 transition">
+                        <button aria-label="right" onClick={()=> router.forward()} className="rounded-full flex items-center justify-center bg-black hover:opacity-75 transition">
                             <RxCaretRight className="text-white" size={35}/>
                         </button>
                     </div>
@@ -78,7 +78,8 @@ const Header: React.FC<HeaderProps>=({
                     items-center
                     justify-center
                     hover:opacity-75
-                    transition">
+                    transition"
+                    onClick={()=> router.replace('/')}>
                         <HiHome size={20} className="text-black"/>
                     </button>
                     <button aria-label="search" className="
@@ -89,7 +90,8 @@ const Header: React.FC<HeaderProps>=({
                     items-center
                     justify-center
                     hover:opacity-75
-                    transition">
+                    transition"
+                    onClick={()=> router.push('/search')}>
                         <BiSearch size={20} className="text-black"/>
                     </button>
                 </div>
