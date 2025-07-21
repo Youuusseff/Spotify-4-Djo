@@ -148,13 +148,33 @@ const copyBillingDetailsToCustomer = async (
             cancel_at_period_end: subscription.cancel_at_period_end,
             canceled_at: subscription.canceled_at ? toDateTime(subscription.canceled_at).toISOString() : null,
             created: toDateTime(subscription.created).toISOString(),
-            current_period_start: toDateTime(subscription.latest_invoice?.period_start).toISOString(),
-            current_period_end: toDateTime(subscription.current_period_end).toISOString(),
+            current_period_start: toDateTime(subscription.items.data[0].current_period_start).toISOString(),
+            current_period_end: toDateTime(subscription.items.data[0].current_period_end).toISOString(),
             ended_at: subscription.ended_at ? toDateTime(subscription.ended_at).toISOString() : null,
             trial_start: subscription.trial_start ? toDateTime(subscription.trial_start).toISOString() : null,
             trial_end: subscription.trial_end ? toDateTime(subscription.trial_end).toISOString() : null,
             //@ts-ignore
             quantity: subscription.quantity,
             metadata: subscription.metadata
+        };
+
+        const { error } = await supabaseAdmin
+            .from("subscriptions")
+            .upsert([subscriptionData]);
+
+        if (error) {
+            throw error;
         }
-    }
+        console.log(`Subscription upserted: [${subscription.id}] for user ${uuid}`);
+
+        if (createAction && subscription.default_payment_method) {
+            await copyBillingDetailsToCustomer(uuid, subscription.default_payment_method as Stripe.PaymentMethod);
+        }
+    };
+
+export {
+    upsertProductRecord,
+    upsertPriceRecord,
+    createOrRetrieveCustomer,
+    manageSubscriptionStatusChange
+};

@@ -19,12 +19,13 @@ export interface UserDetails {
     payment_method?: Stripe.PaymentMethod[Stripe.PaymentMethod.Type];
 }
 
+
 export interface Product {
     id: string;
     active?: boolean;
     name?: string;
     description?: string;
-    images?: string;
+    images?: string | null;
     metadata?: Stripe.Metadata;
 }
 
@@ -42,6 +43,11 @@ export interface Price {
     metadata?: Stripe.Metadata;
     product?: Product;
 }
+
+export interface ProductWithPrice extends Product {
+    prices?: Price[];
+}
+
 
 export interface Subscription {
     id: string;
