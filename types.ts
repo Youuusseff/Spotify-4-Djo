@@ -5,8 +5,17 @@ export interface Song {
     user_id: string;
     title: string;
     author: string;
+    is_public: boolean;
     image_path: string;
     song_path: string;
+}
+
+export interface PublicUserDetails {
+    id: string;
+    full_name?: string;
+    pseudo?: string;
+    bio?: string;
+    avatar_url?: string;
 }
 
 export interface UserDetails {
@@ -14,6 +23,8 @@ export interface UserDetails {
     first_name: string;
     last_name: string;
     full_name?: string;
+    pseudo?: string;
+    bio?: string;
     avatar_url?: string;
     billing_address?: Stripe.Address;
     payment_method?: Stripe.PaymentMethod[Stripe.PaymentMethod.Type];

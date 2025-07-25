@@ -1,7 +1,15 @@
 import Header from "@/components/Header"
-import AccountContent from "./components/AccountContent"
+import SubscriptionContent from "./components/SubscriptionContent";
+import ProfileDetails from "./components/ProfileDetails";
+import getSongsByUserId from "@/actions/getSongsByUserId";
 
-const Account = () => {
+export const revalidate = 0;
+
+
+export default async function Account() {
+
+    const songs = await getSongsByUserId();
+
     return(
         <div
           className="
@@ -10,7 +18,10 @@ const Account = () => {
             h-full
             w-full
             overflow-hidden
-            overflow-y-auto">
+            overflow-y-auto
+            flex
+            flex-col
+            gap-y-6">
             <Header className="from-emerald-900">
                 <div className="mb-2 flex flex-col gap-y-6">
                     <h1 className="text-white text-3xl font-semibold">
@@ -18,9 +29,12 @@ const Account = () => {
                     </h1>
                 </div>
             </Header>
-            <AccountContent />
+            <div className="px-6 mb-7 flex flex-col gap-y-8">
+                <ProfileDetails songs={songs} />
+                <SubscriptionContent />
+            </div>
+            
         </div>
     )
 }
 
-export default Account;

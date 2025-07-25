@@ -13,6 +13,7 @@ import useAuthModal from "@/hooks/useAuthModal";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUser } from "@/hooks/useUser";
 import usePlayer from "@/hooks/usePlayer";
+import useLoadImage from "@/hooks/useLoadImage";
 
 
 
@@ -30,7 +31,9 @@ const Header: React.FC<HeaderProps>=({
     const router = useRouter();
 
     const supabaseClient = useSupabaseClient();
-    const { user } = useUser();
+    const { user, userDetails } = useUser();
+    const profile_picture = useLoadImage(userDetails?.avatar_url);
+
 
     const handleLogout = async () => {
         const { error } = await supabaseClient.auth.signOut();
@@ -117,9 +120,13 @@ const Header: React.FC<HeaderProps>=({
                             </Button>
                             <Button
                                 onClick={()=> router.push('/account')}
-                                className="bg-white"
+                                className="bg-white p-1"
                                 aria-label="account">
-                                <FaUserAlt/>
+                                {profile_picture ? (
+                                    <img src={profile_picture} alt="Profile" className="w-10 h-10 rounded-full"/>
+                                ) : (
+                                    <FaUserAlt/>
+                                )}
                             </Button>
                         </div>
                     ): (
