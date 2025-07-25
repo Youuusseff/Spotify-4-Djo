@@ -14,6 +14,7 @@ import SongItem from "@/components/SongItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import LikeButton from "@/components/LikeButton";
 import MediaItem from "@/components/MediaItem";
+import useEditModal from "@/hooks/useEditModal";
 
 
 interface ProfileDetailsProps {
@@ -23,11 +24,11 @@ interface ProfileDetailsProps {
 const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
 
     const router = useRouter();
-    const { user, userDetails } = useUser();
+    const { user, userDetails, isLoading, setUserDetails } = useUser();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const onPlay = useOnPlay(songs);
-    const [isLoading, setIsLoading] = useState(false);
     const supabase = useSupabaseClient();
+    const editModal = useEditModal();
 
     useEffect(()=>{
         if (!isLoading && !user) {
@@ -39,16 +40,13 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
     const userName = userDetails?.pseudo || "Username";
     const userBio = userDetails?.bio || "Your bio goes here.";
     const handleEditProfile = () => {
-        // Logic to handle profile edit
-        return;
-
+        editModal.onOpen();
     };
 
     const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
         if (!user) {
             return toast.error("You must be logged in to upload a profile picture.");
         }
-        setIsLoading(true);
         const file = event.target.files?.[0];
         if (!file){
             return toast.error("Please select an image file.");
@@ -72,10 +70,12 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
         }
         
 
-        setIsLoading(false);
         toast.success("Profile picture updated successfully.");
 
-        window.location.reload();
+        setUserDetails({
+            ...userDetails!,
+            avatar_url: filePath,
+        });
         
         
     }

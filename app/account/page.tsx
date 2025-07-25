@@ -3,7 +3,6 @@ import SubscriptionContent from "./components/SubscriptionContent";
 import ProfileDetails from "./components/ProfileDetails";
 import getSongsByUserId from "@/actions/getSongsByUserId";
 
-export const revalidate = 0;
 
 
 export default async function Account() {

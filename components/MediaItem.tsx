@@ -1,23 +1,42 @@
 "use client";
 import useLoadImage from "@/hooks/useLoadImage";
-import {Song} from "@/types";
+import {PublicUserDetails, Song} from "@/types";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface MediaItemProps {
-    data: Song;
+    data: Song | PublicUserDetails;
     onClick?: (id: string) => void;
 }
 
 const MediaItem: React.FC<MediaItemProps> = ({ data, onClick }) => {
+
+    const router = useRouter();
     
-    const imageUrl = useLoadImage(data);
 
-    const handleClick = ()=>{
-        if (onClick){
+    const isSong = (data: Song | PublicUserDetails): data is Song => {
+        return 'title' in data;
+    };
+
+    // Get image URL based on type
+    const imageUrl = isSong(data) 
+        ? useLoadImage(data) 
+        : useLoadImage((data as PublicUserDetails).avatar_url);
+
+    const handleClick = () => {
+        if (onClick) {
+            
+            if (isSong(data)) {
+            // Handle song play logic here
+            
+            console.log("Playing song:", data.title);
             return onClick(data.id);
+            } 
+            else {
+            // Navigate to user profile
+            router.push(`/profiles/${data.id}`);
+            }
         }
-
-        // Default turn on player
     }
 
     return (
@@ -42,16 +61,23 @@ const MediaItem: React.FC<MediaItemProps> = ({ data, onClick }) => {
                         ">
                         <Image 
                             fill
-                            src={imageUrl || 'images/liked.png'}
-                            alt = "media Item"
+                            src={imageUrl || '/images/liked.png'}
+                            alt="media Item"
                             className="object-cover"
                         />
                     </div>
-                    <div className="flex flex-col gap-y-1 overflow-hidden">
-                        <p className="text-white truncate">{data.title}</p>
-                        <p className="text-neutral-400 text-sm truncate">{data.author}</p>
-                    </div>
-            
+                    {isSong(data) && (
+                        <div className="flex flex-col gap-y-1 overflow-hidden">
+                            <p className="text-white truncate">{data.title}</p>
+                            <p className="text-neutral-400 text-sm truncate">{data.author}</p>
+                        </div>
+                    )}
+                    {!isSong(data) && (
+                        <div className="flex flex-col gap-y-1 overflow-hidden">
+                            <p className="text-white truncate">{data.pseudo}</p>
+                            <p className="text-neutral-400 text-sm truncate">{data.bio || "No bio"}</p>
+                        </div>
+                    )}
         </div>
     )
 }

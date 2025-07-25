@@ -11,7 +11,7 @@ const getUsersByTitle = async (title: string): Promise<PublicUserDetails[]> => {
     }
 
     const { data, error } = await supabase
-        .rpc("get_public_user_profiles", { title })
+        .rpc("get_public_user_profiles", { term: title })
     
     if (error) {
         console.error("Error fetching users by title:", error);
@@ -20,3 +20,5 @@ const getUsersByTitle = async (title: string): Promise<PublicUserDetails[]> => {
     return (data as PublicUserDetails[]) || [];
     
 }
+
+export default getUsersByTitle;

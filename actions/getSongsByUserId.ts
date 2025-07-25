@@ -2,7 +2,7 @@ import { Song } from "@/types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
-const getSongsByUserId = async (): Promise<Song[]> => {
+const getSongsByUserId = async (id?: string | null | undefined): Promise<Song[]> => {
   const supabase = createServerComponentClient({
     cookies: cookies,
   });
@@ -16,10 +16,14 @@ const getSongsByUserId = async (): Promise<Song[]> => {
     return [];
   }
 
+  if (id === undefined || id === null) {
+    id = sessionData.session?.user.id;
+  }
+
   const {data, error} = await supabase
     .from("songs")
     .select("*")
-    .eq("user_id", sessionData.session?.user.id)
+    .eq("user_id", id)
     .order("created_at", { ascending: false });
 
   if (error) {

@@ -2,6 +2,7 @@ import getSongsByTitle from "@/actions/getSongsByTitle";
 import Header from "@/components/Header";
 import SearchInput from "@/components/SearchInput";
 import SearchContent from "./components/SearchContent";
+import getUsersByTitle from "@/actions/getUsersByTitle";
 
 interface SearchProps {
   searchParams: {
@@ -13,6 +14,7 @@ export const revalidate = 0; // Disable revalidation for this page
 
 const Search = async ({ searchParams }: SearchProps) => {
   const songs = await getSongsByTitle(searchParams.title);
+  const users = await getUsersByTitle(searchParams.title);
 
   return(
     <div
@@ -32,7 +34,7 @@ const Search = async ({ searchParams }: SearchProps) => {
                 <SearchInput />
             </div>
         </Header>
-        <SearchContent songs={songs} />
+        <SearchContent songs={songs} users={users} />
     </div>
   )
 };
