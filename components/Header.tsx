@@ -14,6 +14,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUser } from "@/hooks/useUser";
 import usePlayer from "@/hooks/usePlayer";
 import useLoadImage from "@/hooks/useLoadImage";
+import Image from "next/image";
 
 
 
@@ -124,7 +125,7 @@ const Header: React.FC<HeaderProps>=({
                                 className="bg-white p-1"
                                 aria-label="account">
                                 {profile_picture ? (
-                                    <img src={profile_picture} alt="Profile" className="w-10 h-10 rounded-full"/>
+                                    <Image src={profile_picture} alt="Profile" className="w-10 h-10 rounded-full"/>
                                 ) : (
                                     <FaUserAlt size={24} className="m-1"/>
                                 )}

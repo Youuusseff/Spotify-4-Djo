@@ -33,7 +33,7 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
             <Header className="bg-[linear-gradient(to_bottom,#410454,#171717)]">
                 <div className="mb-2 flex flex-col gap-y-6">
                     <h1 className="text-white text-3xl font-semibold">
-                        {user?.pseudo}'s Profile
+                        {user?.pseudo} Profile
                     </h1>
                 </div>
             </Header>

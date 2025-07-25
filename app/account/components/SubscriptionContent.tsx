@@ -26,14 +26,14 @@ const AccountContent = () => {
     const redirectCustomerPortal = async ()=>{
         setLoading(true);
         try{
-            const {url, error} = await postData({
+            const {url} = await postData({
                 url: '/api/create-portal-link'
             });
             window.location.assign(url);
         }
-        catch (error: any) {
+        catch (error) {
             if (error) {
-                console.error("Error redirecting to customer portal:", error.message);
+                console.error("Error redirecting to customer portal:", error);
                 toast.error("Failed to redirect to customer portal.");
             }
         }

@@ -54,7 +54,7 @@ const EditModal = () => {
             }
            
 
-            const { data , error } = await supabaseClient
+            const { error } = await supabaseClient
                 .from('users')
                 .update({
                     pseudo: values.username,

@@ -1,5 +1,5 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { headers, cookies } from "next/headers";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 import { stripe } from "@/libs/stripe";
@@ -38,8 +38,8 @@ export async function POST(request: Request){
 
     return NextResponse.json({ sessionId: session.id });
     }
-    catch (error: any) {
+    catch (error) {
         console.error("Error creating checkout session:", error);
-        return new NextResponse(`Internal Error: ${error.message}`, { status: 500 });
+        return new NextResponse(`Internal Error: ${error}`, { status: 500 });
     }
 }

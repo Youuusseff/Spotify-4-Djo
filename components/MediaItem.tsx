@@ -19,9 +19,8 @@ const MediaItem: React.FC<MediaItemProps> = ({ data, onClick }) => {
     };
 
     // Get image URL based on type
-    const imageUrl = isSong(data) 
-        ? useLoadImage(data) 
-        : useLoadImage((data as PublicUserDetails).avatar_url);
+    const imageParam = isSong(data) ? data : (data as PublicUserDetails).avatar_url;
+    const imageUrl = useLoadImage(imageParam);
 
     const handleClick = () => {
         if (onClick) {

@@ -2,15 +2,14 @@
 
 import Button from "@/components/Button";
 import Image from "next/image";
-import { HiHome, HiPencil } from "react-icons/hi";
-import { useEffect, useRef, useState } from "react";
+import { HiPencil } from "react-icons/hi";
+import { useEffect, useRef} from "react";
 import useLoadImage from "@/hooks/useLoadImage";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/useUser";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import toast from "react-hot-toast";
 import { Song } from "@/types";
-import SongItem from "@/components/SongItem";
 import useOnPlay from "@/hooks/useOnPlay";
 import LikeButton from "@/components/LikeButton";
 import MediaItem from "@/components/MediaItem";

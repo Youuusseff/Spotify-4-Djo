@@ -2,7 +2,6 @@
 
 import { PublicUserDetails, Song } from "@/types";
 import Image from "next/image";
-import Button from "./Button";
 import MediaItem from "./MediaItem";
 import LikeButton from "./LikeButton";
 import useLoadImage from "@/hooks/useLoadImage";
@@ -18,7 +17,8 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ user, songs }) => {
     const userName = user?.pseudo || "Unknown User";
     const userBio = user?.bio || "No bio available.";
     const onPlay = useOnPlay(songs);
-    const imageUrl = user?.avatar_url ? useLoadImage(user.avatar_url) : '/images/image.png';
+    const userImageUrl = useLoadImage(user?.avatar_url);
+    const imageUrl = userImageUrl || '/images/image.png';
     return(
         <div className="
             p-6
