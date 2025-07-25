@@ -45,6 +45,7 @@ const Header: React.FC<HeaderProps>=({
         }
         else{
             toast.success("Logged out successfully");
+            window.location.reload();
         }
 
     }
