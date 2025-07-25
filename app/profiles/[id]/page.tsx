@@ -5,13 +5,14 @@ import getSongsByUserId from "@/actions/getSongsByUserId";
 
 
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const ProfilePage = async ({ params }: ProfilePageProps) => {
-    const userId = params.id;
+    
+    const {id:userId}  = await params;
     const user = await getUserById(userId);
     const songs = await getSongsByUserId(userId); // Assuming you have a function to get songs by user ID
     if (!user) {

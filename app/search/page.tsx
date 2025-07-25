@@ -5,16 +5,17 @@ import SearchContent from "./components/SearchContent";
 import getUsersByTitle from "@/actions/getUsersByTitle";
 
 interface SearchProps {
-  searchParams: {
+  searchParams: Promise<{
     title: string;
-  };
+  }>;
 }
 
 export const revalidate = 0; // Disable revalidation for this page
 
 const Search = async ({ searchParams }: SearchProps) => {
-  const songs = await getSongsByTitle(searchParams.title);
-  const users = await getUsersByTitle(searchParams.title);
+  const { title } = await searchParams;
+  const songs = await getSongsByTitle(title);
+  const users = await getUsersByTitle(title);
 
   return(
     <div
