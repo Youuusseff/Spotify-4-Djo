@@ -30,7 +30,9 @@
     "tailwind-merge": "^3.3.1",
     "uniqid": "^5.4.0",
     "use-sound": "^5.0.0",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.6",
+    "lightningcss": "^1.21.0",
+    "@tailwindcss/postcss": "^4.0.0-alpha.26"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -45,5 +47,9 @@
     "tailwindcss": "^4",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "optionalDependencies": {
+    "lightningcss-linux-x64-gnu": "^1.21.0",
+    "lightningcss-linux-arm64-gnu": "^1.21.0"
   }
 }
