@@ -22,7 +22,7 @@ export default async function Account() {
             flex
             flex-col
             gap-y-6">
-            <Header className="from-emerald-900">
+            <Header className="bg-[linear-gradient(to_bottom,#410454,#171717)]">
                 <div className="mb-2 flex flex-col gap-y-6">
                     <h1 className="text-white text-3xl font-semibold">
                         Account Settings

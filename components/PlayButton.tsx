@@ -3,13 +3,14 @@ import { FaPlay } from "react-icons/fa";
 const PlayButton = () => {
     return(
         <button
+            aria-label="Play"
             className="
                 rounded-full
                 transition
                 opacity-0
                 flex
                 items-center
-                bg-green-500
+                bg-[#ba2ce6]
                 p-4
                 translate
                 translate-y-1/4

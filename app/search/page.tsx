@@ -24,7 +24,7 @@ const Search = async ({ searchParams }: SearchProps) => {
             overflow-hidden
             overflow-y-auto
         ">
-        <Header className="from-bg-neutral-900" >
+        <Header className="bg-[linear-gradient(to_bottom,#3b094a,#171717)]" >
             <div className="mb-2 flex flex-col gap-y-6">
                 <h1 className="text-white text-3xl font-semibold">
                     Search

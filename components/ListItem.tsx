@@ -55,7 +55,7 @@ const ListItem: React.FC<ListItemProps> = (
                 rounded-full
                 items-center
                 justify-center
-                bg-green-500
+                bg-[#ba2ce6]
                 p-4
                 drop-shadow-md
                 right-5

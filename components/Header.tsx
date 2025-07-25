@@ -51,8 +51,8 @@ const Header: React.FC<HeaderProps>=({
     return(
         <div className={twMerge(`
             h-fit
-            bg-gradient-to-b
-            from-emerald-800
+            bg-[linear-gradient(to_bottom,#5a0b73,#171717)]
+            bg-no-repeat
             p-6
         `,
             className)}>
@@ -125,7 +125,7 @@ const Header: React.FC<HeaderProps>=({
                                 {profile_picture ? (
                                     <img src={profile_picture} alt="Profile" className="w-10 h-10 rounded-full"/>
                                 ) : (
-                                    <FaUserAlt/>
+                                    <FaUserAlt size={24} className="m-1"/>
                                 )}
                             </Button>
                         </div>

@@ -36,7 +36,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
     }, [isLoading, user, router]);
 
     const imageUrl = useLoadImage(userDetails?.avatar_url)
-    const userName = userDetails?.pseudo || "User Name";
+    const userName = userDetails?.pseudo || "Username";
     const userBio = userDetails?.bio || "Your bio goes here.";
     const handleEditProfile = () => {
         // Logic to handle profile edit
@@ -72,9 +72,11 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
         }
         
 
-        router.refresh();
         setIsLoading(false);
         toast.success("Profile picture updated successfully.");
+
+        window.location.reload();
+        
         
     }
 
@@ -88,11 +90,11 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
             gap-y-6">
             <div className="flex justify-center items-center w-full gap-x-18">
                 <div className="relative
-                        aspect-square
                         w-26
                         h-26
                         rounded-full
-                        overflow-hidden"
+                        overflow-hidden
+                        flex-shrink-0"
                         onClick={() => fileInputRef.current?.click()}>
                     <input type="file"
                            aria-label="Upload Profile Picture"
@@ -110,7 +112,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
                 </div>
                 <div className="flex flex-col items-start gap-y-4">
                     <div className="flex gap-x-4 items-center">
-                        <h2 className="text-white text-2xl font-semibold">{userName}</h2>
+                        <h2 className="text-white text-xl  md:text-2xl font-semibold">{userName}</h2>
                         <Button className="w-fit mt-1 bg-neutral-700 hover:bg-neutral-600 transition"
                                 onClick={handleEditProfile}
                         >
