@@ -14,6 +14,7 @@ import useOnPlay from "@/hooks/useOnPlay";
 import LikeButton from "@/components/LikeButton";
 import MediaItem from "@/components/MediaItem";
 import useEditModal from "@/hooks/useEditModal";
+import useUploadModal from "@/hooks/useUploadModal";
 
 
 interface ProfileDetailsProps {
@@ -28,6 +29,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
     const onPlay = useOnPlay(songs);
     const supabase = useSupabaseClient();
     const editModal = useEditModal();
+    const uploadModal = useUploadModal();
 
     useEffect(()=>{
         if (!isLoading && !user) {
@@ -87,7 +89,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
             flex
             flex-col
             gap-y-6">
-            <div className="flex justify-center items-center w-full gap-x-18">
+            <div className="flex justify-center items-center w-full md:gap-x-18 gap-x-11">
                 <div className="relative
                         w-26
                         h-26
@@ -152,6 +154,11 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
         )}
 
             </div>
+            <Button 
+                onClick={() => uploadModal.onOpen()}
+            >
+                Upload New Song
+            </Button>
         </div>
     )
 }

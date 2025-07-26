@@ -2,6 +2,8 @@ import Header from "@/components/Header"
 import SubscriptionContent from "./components/SubscriptionContent";
 import ProfileDetails from "./components/ProfileDetails";
 import getSongsByUserId from "@/actions/getSongsByUserId";
+import UploadModal from "@/components/UploadModal";
+import Button from "@/components/Button";
 
 
 

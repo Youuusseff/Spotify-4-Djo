@@ -45,6 +45,9 @@ const AuthModal = () => {
                             colors:{
                                 brand: '#404040',
                                 brandAccent: '#22c55e',
+                            },
+                            fontSizes: {
+                                baseInputSize: '16px',
                             }
                         }
                     }

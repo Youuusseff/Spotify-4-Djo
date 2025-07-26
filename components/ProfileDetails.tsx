@@ -25,7 +25,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ user, songs }) => {
             flex
             flex-col
             gap-y-6">
-            <div className="flex justify-center items-center w-full gap-x-18">
+            <div className="flex justify-center items-center w-full md:gap-x-18 gap-x-11">
                 <div className="relative
                         w-26
                         h-26
