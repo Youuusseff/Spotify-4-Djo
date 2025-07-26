@@ -25,7 +25,7 @@ const EditModal = () => {
         reset
     } = useForm<FieldValues>({
         defaultValues: {
-            username: '',
+            pseudo: '',
             bio: '',
         }
     });
@@ -33,7 +33,7 @@ const EditModal = () => {
     useEffect(() => {
         if (userDetails) {
             reset({
-                username: userDetails.pseudo || "",
+                pseudo: userDetails.pseudo || "",
                 bio: userDetails.bio || "",
             });
         }
@@ -57,7 +57,7 @@ const EditModal = () => {
             const { error } = await supabaseClient
                 .from('users')
                 .update({
-                    pseudo: values.username,
+                    pseudo: values.pseudo,
                     bio: values.bio
                 })
                 .eq('id', user.id)
@@ -74,7 +74,7 @@ const EditModal = () => {
             toast.success("Profile updated successfully");
             setUserDetails({
                 ...userDetails!,
-                pseudo: values.username,
+                pseudo: values.pseudo,
                 bio: values.bio,
             });
             reset();
