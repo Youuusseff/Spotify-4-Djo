@@ -156,6 +156,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
             </div>
             <Button 
                 onClick={() => uploadModal.onOpen()}
+                className="w-[300px] text-center"
             >
                 Upload New Song
             </Button>
