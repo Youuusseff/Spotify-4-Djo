@@ -2,6 +2,8 @@ import getSongs from "@/actions/getSongs";
 import Header from "@/components/Header";
 import ListItem from "@/components/ListItem";
 import PageContent from "./components/PageContent";
+import { Switch } from "@/components/switch";
+import SwitchContent from "./components/SwitchContent";
 
 export const revalidate = 0;
 export default async function Home() {
@@ -35,11 +37,7 @@ export default async function Home() {
         </div>
       </Header>
       <div className="mt-2 px-6 mb-7">
-        <div className="flex items-center justify-between">
-           <h1 className="text-white text-2xl font-semibold">
-            Newest Songs
-           </h1>
-        </div>
+        <SwitchContent />
         <PageContent songs={songs} />
       </div>
     </div>

@@ -8,6 +8,7 @@ export interface Song {
     is_public: boolean;
     image_path: string;
     song_path: string;
+    created_at: string;
 }
 
 export interface PublicUserDetails {
