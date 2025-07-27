@@ -19,6 +19,15 @@ export interface PublicUserDetails {
     avatar_url?: string;
 }
 
+export interface Comment {
+    id: string;
+    user_id: string;
+    song_id: string;
+    parent_id?: string | null;
+    content: string;
+    created_at: string;
+}
+
 export interface UserDetails {
     id: string;
     first_name: string;

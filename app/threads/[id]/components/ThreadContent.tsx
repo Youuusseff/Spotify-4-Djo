@@ -1,65 +1,107 @@
 "use client";
-
-import Image from "next/image";
-import useLoadImage from "@/hooks/useLoadImage";
-import { PublicUserDetails, Song } from "@/types";
 import Button from "@/components/Button";
-import dayjs from "dayjs";
+import Comment from "@/components/Comment";
+import Input from "@/components/Input";
+import { useUser } from "@/hooks/useUser";
+import { Comment as CommentType } from "@/types";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
-import { FaUserAlt } from "react-icons/fa";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface ThreadContentProps {
-    song: Song,
-    user: PublicUserDetails | null;
+  comments: CommentType[] | null;
+  songId: string;
 }
 
-const ThreadContent: React.FC<ThreadContentProps> = ({ song, user }) => {
-    const rawDate = song?.created_at;
-    const router = useRouter();
-    const profile_picture = useLoadImage(user?.avatar_url);
-    const formattedDate = dayjs(rawDate).format("DD MMM YYYY");
+const ThreadContent: React.FC<ThreadContentProps> = ({ comments, songId }) => {
+  const [replyInput, setReplyInput] = useState(false);
+  const supabaseClient = useSupabaseClient();
+  const { user } = useUser();
+  const [replyText, setReplyText] = useState("");
+  const router = useRouter();
 
+  const handleReply = async (parentId: string | null) => {
+    if (!user) {
+      console.log("User not logged in");
+      return;
+    }
 
-    const imageUrl = useLoadImage(song) || "/images/liked.png";
+    const { error } = await supabaseClient.from("comments").insert({
+      content: replyText || "",
+      user_id: user.id,
+      song_id: songId, 
+      parent_id: parentId,
+    });
 
-    return(
-        <div className="flex justify-around items-center mt-10">
-                    <div className="mb-2 flex flex-col flex-start gap-y-6">
-                        <h1 className="text-white text-3xl font-semibold">
-                            {song.title}
-                        </h1>
-                        <div className="flex md:flex-row flex-col md:items-center md:justify-between gap-y-2 md:gap-x-10">
-                            <div className="flex items-center gap-x-4 ">
-                                <Button
-                                    onClick={()=> router.push('/profile/' + user?.id)}
-                                    className="bg-white p-1 rounded-full w-12 h-12"
-                                    aria-label="account">
-                                    {profile_picture ? (
-                                        <img src={profile_picture} alt="Profile" className="w-10 h-10 rounded-full"/>
-                                    ) : (
-                                        <FaUserAlt size={24} className="m-1"/>
-                                    )}
-                                </Button>
-                                <p className="text-xl">{user?.pseudo}</p>
-                            </div>
-                            
-                            <p className="text-sm text-neutral-400">uploaded at : {formattedDate}</p>
-                        </div>
-                    </div>
-                    <div className="px-6 mb-7  flex flex-col justify-center items-center gap-y-8">
-                        <div className=" bg-neutral-400/5 hover:bg-neutral-400/10 relative aspect-square w-[100px] h-[100px] md:w-[200px] md:h-[200px] rounded-md overflow-hidden">
-                            <Image
-                                className="object-cover"
-                                src={imageUrl}
-                                alt={song.title}
-                                fill
-                            />
-                        </div>
-                        
-                    </div>
-        </div>
-    )
-}
+    if (error) {
+      console.error("Error inserting reply:", error);
+      toast.error("Failed to post reply");
+    } else {
+      setReplyText("");
+      router.refresh();
+      toast.success("Reply posted successfully");
+    }
+  };
+
+  if (!comments || comments.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-y-2">
+        <p className="text-white">No comments available</p>
+        {replyInput && (
+          <Input
+            placeholder="Type your reply..."
+            type="text"
+            className="w-[200px]"
+            onChange={(e) => setReplyText(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleReply(null);
+                setReplyInput(false);
+              }
+            }}
+          />
+        )}
+        {!replyInput && (
+          <Button
+            className="mt-2 w-20 "
+            onClick={() => {
+              setReplyInput(true);
+            }}
+          >
+            Add First Comment
+          </Button>
+        )}
+      </div>
+    );
+  }
+
+  const commentMap: Record<string, CommentType[]> = {};
+  const topLevelComments: CommentType[] = [];
+
+  comments.forEach((comment) => {
+    if (!comment.parent_id) {
+      topLevelComments.push(comment);
+    } else {
+      if (!commentMap[comment.parent_id]) {
+        commentMap[comment.parent_id] = [];
+      }
+      commentMap[comment.parent_id].push(comment);
+    }
+  });
+
+  return (
+    <div className="flex flex-col gap-y-4 px-4 py-2">
+      {topLevelComments.map((comment) => (
+        <Comment
+          key={comment.id}
+          comment={comment}
+          replies={commentMap[comment.id] || []}
+        />
+      ))}
+    </div>
+  );
+};
 
 export default ThreadContent;
-                
+
