@@ -3,7 +3,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import toast from "react-hot-toast";
 import { PublicUserDetails} from "@/types"; 
 
-const useGetUserById = async (userId: string) => {
+const useGetUserById = (userId: string) => {
     const [isLoading, setIsLoading] = useState(false);
     const [user, setUser] = useState<PublicUserDetails | undefined>(undefined);
     const supabaseClient = useSupabaseClient();

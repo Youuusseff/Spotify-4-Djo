@@ -1,66 +1,48 @@
-"use client";
-import { useUser } from "@/hooks/useUser";
 import { Comment as CommentType } from "@/types";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import Input from "./Input";
+import Commenting from "./Commenting";
 import Button from "./Button";
+import { useRouter } from "next/navigation";
+import useGetUserById from "@/hooks/useGetUserById";
+import useLoadImage from "@/hooks/useLoadImage";
+import { FaUserAlt } from "react-icons/fa";
 
 interface ReplyProps {
   reply: CommentType;
+  songId: string;
+  replies: CommentType[];
+  commentMap: Record<string, CommentType[]>;
 }
 
-const Reply: React.FC<ReplyProps> = ({ reply }) => {
-    const [replyInput, setReplyInput] = useState(false);
-    const [replyText, setReplyText] = useState("");
-    const supabaseClient = useSupabaseClient();
-    const { user } = useUser();
-    const router = useRouter();
-    const handleReply = async (parentId: string) => {
-        if(!user) {
-            console.log("User not logged in");
-            return;
-        }
-        console.log("Reply to comment with ID:", parentId);
-        const { error } = await supabaseClient
-            .from("comments")
-            .insert({
-                content: replyText || "",
-                user_id: user.id,
-                parent_id: parentId,
-            });
-
-        if (error) {
-            console.error("Error inserting reply:", error);
-            toast.error("Failed to post reply");
-        }
-        else {
-            setReplyText("");
-            router.refresh();
-            toast.success("Reply posted successfully");
-        }
-
-    };
+const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap }) => {
+  const router = useRouter();
+  const { user } = useGetUserById(reply.user_id);
+  const profile_picture = useLoadImage(user?.avatar_url);
   return (
     <div className="mb-2">
-      <p className="text-gray-400 text-sm">{reply.content}</p>
-      {replyInput && <Input placeholder="Type your reply..." type="text" className="w-[100px]" onChange={(e) => setReplyText(e.target.value)} onKeyDown={e=>{
-        if (e.key === "Enter") {
-          handleReply(reply.id);
-          setReplyInput(false);
-        }
-      }} />}
-      {!replyInput && <Button
-            className="mt-2 w-20"
-            onClick={() => {
-                setReplyInput(true);
-            }}
-        >
-            Reply
+      <div className="flex items-center gap-x-2 mb-2">
+        <Button
+          onClick={()=> router.push('/profiles/' + reply.user_id)}
+          className="bg-white p-0 w-fit h-fit rounded-full hover:bg-gray-200 transition"
+          aria-label="account">
+          {profile_picture ? (
+            <img src={profile_picture} alt="Profile" className="w-9 h-9 rounded-full"/>
+            ) : (
+            <FaUserAlt size={24} className="m-1"/>
+          )}
         </Button>
-        }
+        <span className="text-gray-400 text-sm ml-2">{user?.pseudo}</span>
+      </div>
+      <div className="relative w-fit pb-10">
+        <p className="text-gray-400 text-sm ml-12">{reply.content}</p>
+        <div className="absolute bottom-0 right-0 mt-2">
+          <Commenting songId={songId} parentId={reply.id} />
+        </div>
+      </div>
+      <div className="ml-8 mt-4">
+        {replies.map((reply) => (
+          <Reply key={reply.id} reply={reply} songId={songId} replies={commentMap[reply.id] || []} commentMap={commentMap} />
+        ))}
+      </div>
     </div>
   );
 };

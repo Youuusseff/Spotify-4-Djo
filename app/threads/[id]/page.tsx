@@ -41,7 +41,7 @@ const ThreadPage = async ({ params }: ThreadPageProps) => {
                     <ThreadHeader song={song} public_user={user} />
             </Header>
 
-            <ThreadContent comments={comments} songId={song.id} />
+            <ThreadContent songId={song.id} comments={comments}/>
 
         </div>
     )
