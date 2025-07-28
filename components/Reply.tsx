@@ -18,7 +18,7 @@ const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap }) => 
   const { user } = useGetUserById(reply.user_id);
   const profile_picture = useLoadImage(user?.avatar_url);
   return (
-    <div className="mb-2">
+    <div className="ml-5 mb-2">
       <div className="flex items-center gap-x-2 mb-2">
         <Button
           onClick={()=> router.push('/profiles/' + reply.user_id)}
@@ -32,9 +32,9 @@ const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap }) => 
         </Button>
         <span className="text-gray-400 text-sm ml-2">{user?.pseudo}</span>
       </div>
-      <div className="relative w-fit pb-10">
+      <div className="w-fit">
         <p className="text-gray-400 text-sm ml-12">{reply.content}</p>
-        <div className="absolute bottom-0 right-0 mt-2">
+        <div className="mt-2">
           <Commenting songId={songId} parentId={reply.id} />
         </div>
       </div>

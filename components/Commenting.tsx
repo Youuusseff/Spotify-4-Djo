@@ -32,7 +32,7 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
 
     return(
         <>
-            <div className="flex items-center gap-x-2 mb-2">
+            <div className="flex items-center gap-x-2 mb-2 ml-14">
                 {!button_text && (
                     <CommentVoting
                         commentId={parentId || ""}

@@ -36,9 +36,9 @@ const Comment: React.FC<CommentProps> = ({ comment, replies, songId, commentMap 
         </Button>
         <span className="text-gray-400 text-sm ml-2">{user?.pseudo}</span>
       </div>
-      <div className="relative w-fit pb-10">
+      <div className="relative w-fit">
         <p className="text-white text-lg ml-10">{comment.content}</p>
-        <div className="absolute bottom-0 right-0 mt-2">
+        <div className=" mt-2">
           <Commenting songId={songId} parentId={comment.id} />
         </div>
       </div>
