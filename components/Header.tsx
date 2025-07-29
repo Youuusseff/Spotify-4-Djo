@@ -125,7 +125,7 @@ const Header: React.FC<HeaderProps>=({
                                 className="bg-white p-1"
                                 aria-label="account">
                                 {profile_picture ? (
-                                    <img src={profile_picture} alt="Profile" className="w-10 h-10 rounded-full"/>
+                                    <img src={profile_picture} alt="Profile" className="w-10 h-10 rounded-full object-cover"/>
                                 ) : (
                                     <FaUserAlt size={24} className="m-1"/>
                                 )}

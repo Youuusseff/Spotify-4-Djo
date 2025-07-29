@@ -33,7 +33,7 @@ const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap, depth
           className="bg-white p-0 w-fit h-fit rounded-full hover:bg-gray-200 transition"
           aria-label="account">
           {profile_picture ? (
-            <img src={profile_picture} alt="Profile" className="w-9 h-9 rounded-full"/>
+            <img src={profile_picture} alt="Profile" className="w-9 h-9 rounded-full object-cover"/>
             ) : (
             <FaUserAlt size={24} className="m-1"/>
           )}

@@ -47,7 +47,7 @@ const AuthModal = () => {
                                 brandAccent: '#22c55e',
                             },
                             fontSizes: {
-                                baseInputSize: '16px',
+                                baseInputSize: '14px',
                             }
                         }
                     }
