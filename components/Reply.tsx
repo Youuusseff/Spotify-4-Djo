@@ -11,9 +11,10 @@ interface ReplyProps {
   songId: string;
   replies: CommentType[];
   commentMap: Record<string, CommentType[]>;
+  depth?: number;
 }
 
-const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap }) => {
+const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap, depth = 1 }) => {
   const router = useRouter();
   const { user } = useGetUserById(reply.user_id);
   const profile_picture = useLoadImage(user?.avatar_url);
@@ -34,14 +35,14 @@ const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap }) => 
       </div>
       <div className="border-l border-gray-700 ml-4">
         <div className="w-fit">
-          <p className="text-gray-400 text-sm ml-12">{reply.content}</p>
+          <p className="text-gray-400 text-sm pl-4 break-words">{reply.content}</p>
           <div className="mt-2">
-            <Commenting songId={songId} parentId={reply.id} />
+            <Commenting songId={songId} parentId={reply.id} depth={depth} />
           </div>
         </div>
-        <div className="ml-8 mt-4">
+        <div className="pl-4 border-l border-gray-700 mt-4">
           {replies.map((reply) => (
-            <Reply key={reply.id} reply={reply} songId={songId} replies={commentMap[reply.id] || []} commentMap={commentMap} />
+            <Reply key={reply.id} reply={reply} songId={songId} replies={commentMap[reply.id] || []} commentMap={commentMap} depth={depth ? depth + 1 : 1} />
           ))}
         </div>
 

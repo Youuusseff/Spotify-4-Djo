@@ -37,14 +37,14 @@ const Comment: React.FC<CommentProps> = ({ comment, replies, songId, commentMap 
         <span className="text-gray-400 text-sm ml-2">{user?.pseudo}</span>
       </div>
       <div className="border-l border-gray-700 ml-4">
-        <div className="relative w-fit  ">
-          <p className="text-white text-lg ml-10">{comment.content}</p>
+        <div className="w-full max-w-full relative ">
+          <p className="text-white text-lg pl-4 break-words">{comment.content}</p>
           <div className=" mt-2">
-            <Commenting songId={songId} parentId={comment.id} />
+            <Commenting depth={1} songId={songId} parentId={comment.id} />
           </div>
         </div>
         
-        <div className="ml-8 mt-4">
+        <div className="ml-0 mt-4">
           {replies.map(reply => (
             <Reply key={reply.id} reply={reply} songId={songId} replies={commentMap[reply.id] || []} commentMap={commentMap} />
           ))}

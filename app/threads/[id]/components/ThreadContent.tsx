@@ -35,7 +35,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({ comments, songId }) => {
   });
 
   return (
-    <div className="flex flex-col gap-y-4 px-4 py-2">
+    <div className="flex flex-col gap-y-4 px-4 py-2 mr-5 w-full max-w-[500px] md:max-w-full">
       {topLevelComments.map((comment) => (
         <div key={comment.id} className="border-b border-gray-700 pb-4">
           <Comment
@@ -48,7 +48,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({ comments, songId }) => {
         </div>
       ))}
       <div className="mt-4">
-        <Commenting button_text="Add Comment" parentId={null} songId={songId} />
+        <Commenting depth={1} button_text="Add Comment" parentId={null} songId={songId} />
       </div>
     </div>
   );

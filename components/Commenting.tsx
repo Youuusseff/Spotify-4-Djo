@@ -10,15 +10,18 @@ import { AiOutlineSend } from "react-icons/ai";
 import CommentVoting from "./CommentVoting";
 
 
+const MAX_DEPTH = 3; 
+
 interface CommentingProps {
     button_text?: string;
     parentId: string | null;
     songId: string;
     key?: string;
+    depth: number;
 }
 
 
-const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, key }) => {
+const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, key, depth }) => {
 
     const [replyInput, setReplyInput] = useState(false);
     const [replyText, setReplyText] = useState("");
@@ -38,7 +41,7 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                         commentId={parentId || ""}
                     />
                 )}
-                
+                {depth < MAX_DEPTH && (
                 <Button
                     className="text-white p-1 flex align-center bg-[#171717] hover:bg-gray-600 w-fit"
                     onClick={() => {
@@ -53,6 +56,7 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                         </div>
                     )}
                 </Button>
+            )}
             </div>
             {replyInput && (
             <div className="relative w-fit ml-10">
@@ -74,7 +78,7 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                         setReplyInput(false);
                         }
                     }}
-                    className="hidden md:block w-[500px] rounded-2xl bg-neutral-800 text-white pt-2 pl-5 pr-15 resize-none overflow-hidden"
+                    className="hidden md:block w-full max-w-full rounded-2xl bg-neutral-800 text-white pt-2 pl-5 pr-15 resize-none overflow-hidden"
                 />
                 <textarea
                     placeholder="Type your comment..."
@@ -86,7 +90,7 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                         target.style.height = "auto"; 
                         target.style.height = `${target.scrollHeight}px`;
                     }}
-                    className="md:hidden w-[300px] rounded-2xl bg-neutral-800 text-white pt-2 pl-5 pr-15 resize-none overflow-hidden"
+                    className="md:hidden w-full max-w-full rounded-2xl bg-neutral-800 text-white pt-2 pl-5 pr-15 resize-none overflow-hidden"
                 />
                 <div className="absolute right-4 top-4">
                     <div className="flex items-center gap-x-2">
