@@ -20,7 +20,7 @@ const useUploadComment = () => {
       .insert({
         parent_id: parentId,
         user_id: user.id,
-        song_id: songId,
+        song_id: parentId ? null : songId,
         content: comment || "",
       });
 
