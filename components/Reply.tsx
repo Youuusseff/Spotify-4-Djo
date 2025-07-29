@@ -5,6 +5,11 @@ import { useRouter } from "next/navigation";
 import useGetUserById from "@/hooks/useGetUserById";
 import useLoadImage from "@/hooks/useLoadImage";
 import { FaUserAlt } from "react-icons/fa";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+
+dayjs.extend(relativeTime);
 
 interface ReplyProps {
   reply: CommentType;
@@ -18,11 +23,13 @@ const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap, depth
   const router = useRouter();
   const { user } = useGetUserById(reply.user_id);
   const profile_picture = useLoadImage(user?.avatar_url);
+  const rawDate = reply.created_at;
+    const displayDate = dayjs(rawDate).fromNow();
   return (
     <div className="ml-5 mb-2">
       <div className="flex items-center gap-x-2 mb-2">
         <Button
-          onClick={()=> router.push('/profiles/' + reply.user_id)}
+          onClick={()=> router.push(`/profiles/${reply.user_id}`)}
           className="bg-white p-0 w-fit h-fit rounded-full hover:bg-gray-200 transition"
           aria-label="account">
           {profile_picture ? (
@@ -32,10 +39,11 @@ const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap, depth
           )}
         </Button>
         <span className="text-gray-400 text-sm ml-2">{user?.pseudo}</span>
+        <span className="text-gray-400 text-xs ml-2">{displayDate}</span>
       </div>
       <div className="border-l border-gray-700 ml-4">
         <div className="w-fit">
-          <p className="text-gray-400 text-sm pl-4 break-words">{reply.content}</p>
+          <p className="text-gray-400 text-sm pl-4 break-words whitespace-pre-line">{reply.content}</p>
           <div className="mt-2">
             <Commenting songId={songId} parentId={reply.id} depth={depth} />
           </div>

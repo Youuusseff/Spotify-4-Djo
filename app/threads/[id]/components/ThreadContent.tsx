@@ -15,7 +15,7 @@ const ThreadContent: React.FC<ThreadContentProps> = ({ comments, songId }) => {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-y-2 mr-14">
         <p className="text-white ml-14">No comments available</p>
-        <Commenting button_text="Be first to comment" parentId={null} songId={songId} />
+        <Commenting depth={1} button_text="Be first to comment" parentId={null} songId={songId} />
       </div>
     );
   }
