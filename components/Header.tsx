@@ -14,6 +14,8 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useUser } from "@/hooks/useUser";
 import usePlayer from "@/hooks/usePlayer";
 import useLoadImage from "@/hooks/useLoadImage";
+import { NotificationBell } from '@/components/NotificationBell'
+
 
 
 
@@ -120,6 +122,7 @@ const Header: React.FC<HeaderProps>=({
                             >
                                 Logout
                             </Button>
+                            <NotificationBell />
                             <Button
                                 onClick={()=> router.push('/account')}
                                 className="bg-white p-1"

@@ -10,6 +10,43 @@ export interface Song {
     song_path: string;
     created_at: string;
 }
+export interface Notification {
+  id: string
+  recipient_id: string
+  actor_id: string
+  type: 'song_comment' | 'comment_reply' | 'song_like' | 'comment_vote'
+  entity_type: 'song' | 'comment'
+  entity_id: number // number to match your schema
+  parent_entity_id?: number
+  vote_value?: number // 1 for upvote, -1 for downvote
+  message: string
+  read: boolean
+  created_at: string
+  updated_at: string
+  actor: {
+    id: string
+    pseudo: string | null
+    avatar_url: string | null
+    bio: string | null
+  }
+  song?: {
+    id: number
+    title: string | null
+    user_id: string | null
+  }
+  comment?: {
+    id: number
+    content: string | null
+    user_id: string | null
+  }
+}
+
+export interface NotificationStats {
+  [key: string]: {
+    total: number
+    unread: number
+  }
+}
 
 export interface PublicUserDetails {
     id: string;
