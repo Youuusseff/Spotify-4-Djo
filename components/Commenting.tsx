@@ -8,6 +8,7 @@ import { FaArrowUp, FaComment, FaReply } from "react-icons/fa";
 import { IoMdClose } from 'react-icons/io';
 import { AiOutlineSend } from "react-icons/ai";
 import CommentVoting from "./CommentVoting";
+import usePlayer from "@/hooks/usePlayer";
 
 
 const MAX_DEPTH = 3; 
@@ -20,7 +21,6 @@ interface CommentingProps {
     depth: number;
 }
 
-
 const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, key, depth }) => {
 
     const [replyInput, setReplyInput] = useState(false);
@@ -32,12 +32,13 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
         setReplyText("");
         setReplyInput(false);
     };
+    
     const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
     const handleFocus = () => {
         inputRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
+            behavior: "smooth",
+            block: "center",
         });
     };
 
@@ -52,9 +53,7 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                 {depth < MAX_DEPTH && (
                 <Button
                     className="text-white p-1 flex align-center bg-[#171717] hover:bg-gray-600 w-fit"
-                    onClick={() => {
-                    setReplyInput(true);
-                    }}
+                    onClick={() => setReplyInput(true)}
                 >
                     {
                         button_text ? <p className="p-3 bg-gray-600 rounded-2xl ">{button_text}</p> : (
@@ -64,11 +63,10 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                         </div>
                     )}
                 </Button>
-            )}
+                )}
             </div>
             {replyInput && (
             <div className="relative w-fit ml-10">
-
                 <textarea
                     placeholder="Type your comment..."
                     autoFocus
@@ -83,9 +81,9 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                     }}
                     onKeyDown={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
-                        e.preventDefault();
-                        handleReply(parentId);
-                        setReplyInput(false);
+                            e.preventDefault();
+                            handleReply(parentId);
+                            setReplyInput(false);
                         }
                     }}
                     className="hidden md:block w-full max-w-full rounded-2xl bg-neutral-800 text-white pt-2 pl-5 pr-15 resize-none overflow-hidden"
@@ -104,13 +102,22 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                 />
                 <div className="absolute right-4 top-4">
                     <div className="flex items-center gap-x-2">
-                        <IoMdClose className="cursor-pointer" onClick={() => setReplyInput(false)} />
-                        <AiOutlineSend className="cursor-pointer" onClick={() => {handleReply(parentId); setReplyInput(false)}} />
+                        <IoMdClose 
+                            className="cursor-pointer" 
+                            onClick={() => setReplyInput(false)} 
+                        />
+                        <AiOutlineSend 
+                            className="cursor-pointer" 
+                            onClick={() => {
+                                handleReply(parentId); 
+                                setReplyInput(false); 
+                            }} 
+                        />
                     </div>    
                 </div>
             </div>
             )}
-      </>
+        </>
     )
 }
 
