@@ -6,7 +6,7 @@ import Input from "./Input";
 import useUploadComment from "@/hooks/useUploadComment";
 import { FaArrowUp, FaComment, FaReply } from "react-icons/fa";
 import { IoMdClose } from 'react-icons/io';
-import { TiArrowDownOutline, TiArrowUpOutline } from "react-icons/ti";
+import { AiOutlineSend } from "react-icons/ai";
 import CommentVoting from "./CommentVoting";
 
 
@@ -55,21 +55,45 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                 </Button>
             </div>
             {replyInput && (
-            <div className="relative w-fit">
+            <div className="relative w-fit ml-10">
 
-                <Input
+                <textarea
                     placeholder="Type your comment..."
-                    type="text"
-                    className="md:w-[400px] rounded-2xl bg-neutral-800 text-white p-2 pl-5 pr-10"
+                    autoFocus
+                    value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
+                    onInput={(e) => {
+                        const target = e.target as HTMLTextAreaElement;
+                        target.style.height = "auto"; 
+                        target.style.height = `${target.scrollHeight}px`;
+                    }}
                     onKeyDown={(e) => {
-                    if (e.key === "Enter") {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
                         handleReply(parentId);
                         setReplyInput(false);
-                    }
+                        }
                     }}
+                    className="hidden md:block w-[500px] rounded-2xl bg-neutral-800 text-white pt-2 pl-5 pr-15 resize-none overflow-hidden"
                 />
-                <IoMdClose className="absolute right-2 top-4 cursor-pointer" onClick={() => setReplyInput(false)} />
+                <textarea
+                    placeholder="Type your comment..."
+                    autoFocus
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    onInput={(e) => {
+                        const target = e.target as HTMLTextAreaElement;
+                        target.style.height = "auto"; 
+                        target.style.height = `${target.scrollHeight}px`;
+                    }}
+                    className="md:hidden w-[300px] rounded-2xl bg-neutral-800 text-white pt-2 pl-5 pr-15 resize-none overflow-hidden"
+                />
+                <div className="absolute right-4 top-4">
+                    <div className="flex items-center gap-x-2">
+                        <IoMdClose className="cursor-pointer" onClick={() => setReplyInput(false)} />
+                        <AiOutlineSend className="cursor-pointer" onClick={() => {handleReply(parentId); setReplyInput(false)}} />
+                    </div>    
+                </div>
             </div>
             )}
       </>

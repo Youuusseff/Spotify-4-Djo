@@ -32,17 +32,21 @@ const Reply: React.FC<ReplyProps> = ({ reply, songId, replies, commentMap }) => 
         </Button>
         <span className="text-gray-400 text-sm ml-2">{user?.pseudo}</span>
       </div>
-      <div className="w-fit">
-        <p className="text-gray-400 text-sm ml-12">{reply.content}</p>
-        <div className="mt-2">
-          <Commenting songId={songId} parentId={reply.id} />
+      <div className="border-l border-gray-700 ml-4">
+        <div className="w-fit">
+          <p className="text-gray-400 text-sm ml-12">{reply.content}</p>
+          <div className="mt-2">
+            <Commenting songId={songId} parentId={reply.id} />
+          </div>
         </div>
+        <div className="ml-8 mt-4">
+          {replies.map((reply) => (
+            <Reply key={reply.id} reply={reply} songId={songId} replies={commentMap[reply.id] || []} commentMap={commentMap} />
+          ))}
+        </div>
+
       </div>
-      <div className="ml-8 mt-4">
-        {replies.map((reply) => (
-          <Reply key={reply.id} reply={reply} songId={songId} replies={commentMap[reply.id] || []} commentMap={commentMap} />
-        ))}
-      </div>
+      
     </div>
   );
 };
