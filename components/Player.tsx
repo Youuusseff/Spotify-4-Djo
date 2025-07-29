@@ -47,7 +47,7 @@ const Player = () => {
         }
     }, []);
 
-    if (!song || !songUrl || !activeId) {
+    if (!song || !songUrl || !activeId || hidden || isKeyboardOpen) {
         return null;
     }
 
