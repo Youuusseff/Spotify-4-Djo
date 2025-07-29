@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
 import useUploadComment from "@/hooks/useUploadComment";
@@ -31,6 +31,14 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
         await uploadComment(parentId, replyText, songId);
         setReplyText("");
         setReplyInput(false);
+    };
+    const inputRef = useRef<HTMLTextAreaElement | null>(null);
+
+    const handleFocus = () => {
+        inputRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        });
     };
 
     return(
@@ -64,6 +72,8 @@ const Commenting: React.FC<CommentingProps> = ({ button_text, parentId, songId, 
                 <textarea
                     placeholder="Type your comment..."
                     autoFocus
+                    ref={inputRef}
+                    onFocus={handleFocus}
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     onInput={(e) => {
