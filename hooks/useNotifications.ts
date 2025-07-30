@@ -23,7 +23,21 @@ export function useNotifications() {
       .eq('id', commentId)
       .single()
     console.log('Fetched song ID:', data?.song_id)
-    return data?.song_id || null
+    if (data?.song_id) {
+      return data.song_id
+    }
+    else {
+      const { data: ParentComment } = await supabase
+        .from('comments')
+        .select('parent_id')
+        .eq('id', commentId)
+        .single()
+
+      if (ParentComment?.parent_id) {
+        return getSongIdFromCommentId(ParentComment.parent_id)
+      }
+    }
+    return null
   }
 
   // Calculate unread count from notifications array
