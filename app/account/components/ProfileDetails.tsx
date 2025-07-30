@@ -15,6 +15,7 @@ import LikeButton from "@/components/LikeButton";
 import MediaItem from "@/components/MediaItem";
 import useEditModal from "@/hooks/useEditModal";
 import useUploadModal from "@/hooks/useUploadModal";
+import useGetUserById from "@/hooks/useGetUserById";
 
 
 interface ProfileDetailsProps {
@@ -30,6 +31,8 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
     const supabase = useSupabaseClient();
     const editModal = useEditModal();
     const uploadModal = useUploadModal();
+    const getUserDetails = useGetUserById(user?.id);
+    console.log("User Details:", getUserDetails.user?.followers);
 
     useEffect(()=>{
         if (!isLoading && !user) {
@@ -89,41 +92,55 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
             flex
             flex-col
             gap-y-6">
-            <div className="flex justify-center items-center w-full md:gap-x-18 gap-x-11">
-                <div className="relative
+            <div className="flex flex-col md:flex-row  gap-x-20 justify-center items-center w-full gap-y-6">
+                <div className="flex items-center md:gap-x-18 gap-x-11">
+                    <div className="relative
                         w-26
                         h-26
                         rounded-full
                         overflow-hidden
                         flex-shrink-0"
                         onClick={() => fileInputRef.current?.click()}>
-                    <input type="file"
+                        <input type="file"
                            aria-label="Upload Profile Picture"
                            ref={fileInputRef}
                            accept="image/*"
                            className="hidden"
                            onChange={handleImageUpload}
-                    />
-                    <Image
-                    src={imageUrl ? imageUrl : "/images/image.png"}
-                    alt="Profile Picture"
-                    className="rounded-full object-cover cursor-pointer hover:opacity-75 transition"
-                    fill
-                    />
-                </div>
-                <div className="flex flex-col items-start gap-y-4">
-                    <div className="flex gap-x-4 items-center">
-                        <h2 className="text-white text-xl  md:text-2xl font-semibold">{userName}</h2>
-                        <Button className="w-fit mt-1 bg-neutral-700 hover:bg-neutral-600 transition"
-                                onClick={handleEditProfile}
-                        >
-                            <HiPencil />
-                        </Button>
+                        />
+                        <Image
+                        src={imageUrl ? imageUrl : "/images/image.png"}
+                        alt="Profile Picture"
+                        className="rounded-full object-cover cursor-pointer hover:opacity-75 transition"
+                        fill
+                        />
+                    </div>
+                    <div className="flex flex-col items-start gap-y-4">
+                        <div className="flex gap-x-4 items-center">
+                            <h2 className="text-white text-xl  md:text-2xl font-semibold">{userName}</h2>
+                            <Button className="w-fit mt-1 bg-neutral-700 hover:bg-neutral-600 transition"
+                                    onClick={handleEditProfile}
+                            >
+                                <HiPencil />
+                            </Button>
+                        </div>
+                        
+                        <p className="text-neutral-400">
+                            {userBio}
+                        </p>
                     </div>
                     
-                    <p className="text-neutral-400">
-                        {userBio}
-                    </p>
+
+                </div>
+                <div className="flex items-center gap-x-4">
+                        <div className="flex flex-col items-center">
+                            <h4 className="text-white text-lg font-semibold">Followers</h4>
+                            <p className="text-neutral-400">{getUserDetails.user?.followers || 0}</p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <h4 className="text-white text-lg font-semibold">Following</h4>
+                            <p className="text-neutral-400">{getUserDetails.user?.following || 0}</p>
+                        </div>
                 </div>
                 
             </div>

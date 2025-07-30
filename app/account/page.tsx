@@ -4,13 +4,13 @@ import ProfileDetails from "./components/ProfileDetails";
 import getSongsByUserId from "@/actions/getSongsByUserId";
 import UploadModal from "@/components/UploadModal";
 import Button from "@/components/Button";
+import getUserById from "@/actions/getUserById";
 
 
 
 export default async function Account() {
 
     const songs = await getSongsByUserId();
-
     return(
         <div
           className="

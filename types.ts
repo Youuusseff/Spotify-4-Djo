@@ -54,6 +54,8 @@ export interface PublicUserDetails {
     pseudo?: string;
     bio?: string;
     avatar_url?: string;
+    followers?: number;
+    following?: number;
 }
 
 export interface Comment {
