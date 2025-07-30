@@ -3,12 +3,14 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
 import { Notification } from '@/types'
+import { useRouter } from 'next/navigation'
 
 export function useNotifications() {
-  const [notifications, setNotifications] = useState<Notification[]>([])
-  const [unreadCount, setUnreadCount] = useState(0)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const Router = useRouter()
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const supabase = useSupabaseClient()
 
@@ -99,13 +101,15 @@ export function useNotifications() {
   const navigateToNotification = useCallback((notification: Notification) => {
     switch (notification.type) {
       case 'song_like':
-      case 'song_comment':
-        window.location.href = `/songs/${notification.entity_id}`
+        Router.push(`/profiles/${notification.actor.id}`)
         break
+      case 'song_comment':
       case 'comment_reply':
       case 'comment_vote':
-        window.location.href = `/songs/${notification.song?.id}#comment-${notification.entity_id}`
+        Router.push(`/threads/${notification.song?.id}`)
         break
+      default:
+        console.warn('Unknown notification type:', notification.type)
     }
   }, [])
 
