@@ -11,19 +11,7 @@ export async function GET() {
   }
 
   const { data, error } = await supabase
-  .from('notifications')
-  .select(`
-    *,
-    actor:actor_id (
-      id, pseudo, avatar_url
-    ),
-    song:entity_id (
-      id, title
-    )
-  `)
-  .eq('recipient_id', user.id)
-  .order('created_at', { ascending: false })
-  .limit(15);
+    .rpc('get_user_notifications', { p_user_id: user.id });
 
 
   if (error) {
