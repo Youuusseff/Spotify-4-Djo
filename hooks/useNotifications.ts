@@ -14,6 +14,18 @@ export function useNotifications() {
 
   const supabase = useSupabaseClient()
 
+  const getSongIdFromCommentId = async (commentId: string): Promise<string | null> => {
+    if (!commentId) return null;
+    console.log('Fetching song ID for comment ID:', commentId)
+    const { data } = await supabase
+      .from('comments')
+      .select('song_id')
+      .eq('id', commentId)
+      .single()
+    console.log('Fetched song ID:', data?.song_id)
+    return data?.song_id || null
+  }
+
   // Calculate unread count from notifications array
   const calculateUnreadCount = useCallback((notificationsList: Notification[]) => {
     const count = notificationsList.filter(n => !n.read).length
@@ -98,15 +110,21 @@ export function useNotifications() {
     }
   }, [notifications, calculateUnreadCount])
 
-  const navigateToNotification = useCallback((notification: Notification) => {
+  const navigateToNotification = useCallback(async (notification: Notification) => {
     switch (notification.type) {
       case 'song_like':
-        Router.push(`/profiles/${notification.actor.id}`)
+        Router.push(`/profiles/${notification.actor_id}`)
         break
       case 'song_comment':
+        Router.push(`/threads/${notification.entity_id}`)
+        break
       case 'comment_reply':
       case 'comment_vote':
-        Router.push(`/threads/${notification.song?.id}`)
+        const commentIdAsString = notification.entity_id.toString()
+        console.log('Navigating to comment ID to string:', commentIdAsString)
+        const songId = await getSongIdFromCommentId(commentIdAsString)
+        console.log('Navigating to song ID:', songId)
+        Router.push(`/threads/${songId}`)
         break
       default:
         console.warn('Unknown notification type:', notification.type)
