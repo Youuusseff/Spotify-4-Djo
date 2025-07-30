@@ -12,6 +12,7 @@ export async function GET() {
 
   const { data, error } = await supabase
     .rpc('get_user_notifications', { p_user_id: user.id });
+  console.log('Raw notification data:', data);
 
 
   if (error) {

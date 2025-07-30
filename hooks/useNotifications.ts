@@ -12,6 +12,13 @@ export function useNotifications() {
 
   const supabase = useSupabaseClient()
 
+  // Calculate unread count from notifications array
+  const calculateUnreadCount = useCallback((notificationsList: Notification[]) => {
+    const count = notificationsList.filter(n => !n.read).length
+    setUnreadCount(count)
+    return count
+  }, [])
+
   const loadNotifications = useCallback(async () => {
     setLoading(true)
     setError(null)
@@ -19,26 +26,21 @@ export function useNotifications() {
       const res = await fetch('/api/notifications')
       const data = await res.json()
       // The route returns array directly
-      setNotifications(Array.isArray(data) ? data : [])
+      const notificationsList = Array.isArray(data) ? data : []
+      setNotifications(notificationsList)
+      
+      // Calculate unread count from loaded notifications
+      calculateUnreadCount(notificationsList)
+      
       console.log('Loaded notifications:', data)
-      console.log('Current notifications state:', notifications)
+      console.log('Unread count:', notificationsList.filter(n => !n.read).length)
     } catch (err) {
       console.error('Error loading notifications:', err)
       setError('Failed to load notifications')
     } finally {
       setLoading(false)
     }
-  }, [])
-
-  const loadUnreadCount = useCallback(async () => {
-    try {
-      const res = await fetch('/api/notifications/unread-count')
-      const data = await res.json()
-      setUnreadCount(data.count ?? 0)
-    } catch (err) {
-      console.error('Error loading unread count:', err)
-    }
-  }, [])
+  }, [calculateUnreadCount])
 
   const markAsRead = useCallback(async (notificationIds: string[]) => {
     try {
@@ -48,25 +50,19 @@ export function useNotifications() {
         body: JSON.stringify({ notificationIds }),
       })
 
-      setNotifications(prev =>
-        prev.map(n =>
-          notificationIds.includes(n.id)
-            ? { ...n, read: true }
-            : n
-        )
+      const updatedNotifications = notifications.map(n =>
+        notificationIds.includes(n.id)
+          ? { ...n, read: true }
+          : n
       )
-
-      setUnreadCount(prev => {
-        const unreadMarked = notifications.filter(
-          n => notificationIds.includes(n.id) && !n.read
-        ).length
-        return Math.max(0, prev - unreadMarked)
-      })
+      
+      setNotifications(updatedNotifications)
+      calculateUnreadCount(updatedNotifications)
     } catch (err) {
       console.error('Error marking notifications as read:', err)
       setError('Failed to mark notifications as read')
     }
-  }, [notifications])
+  }, [notifications, calculateUnreadCount])
 
   const markAllAsRead = useCallback(async () => {
     try {
@@ -74,13 +70,14 @@ export function useNotifications() {
         method: 'POST',
       })
 
-      setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+      const updatedNotifications = notifications.map(n => ({ ...n, read: true }))
+      setNotifications(updatedNotifications)
       setUnreadCount(0)
     } catch (err) {
       console.error('Error marking all notifications as read:', err)
       setError('Failed to mark all notifications as read')
     }
-  }, [])
+  }, [notifications])
 
   const deleteNotificationById = useCallback(async (notificationId: string) => {
     try {
@@ -90,19 +87,14 @@ export function useNotifications() {
         body: JSON.stringify({ notificationId }),
       })
 
-      setNotifications(prev => prev.filter(n => n.id !== notificationId))
-
-      setUnreadCount(prev => {
-        const deletedUnread = notifications.find(
-          n => n.id === notificationId && !n.read
-        )
-        return deletedUnread ? Math.max(0, prev - 1) : prev
-      })
+      const updatedNotifications = notifications.filter(n => n.id !== notificationId)
+      setNotifications(updatedNotifications)
+      calculateUnreadCount(updatedNotifications)
     } catch (err) {
       console.error('Error deleting notification:', err)
       setError('Failed to delete notification')
     }
-  }, [notifications])
+  }, [notifications, calculateUnreadCount])
 
   const navigateToNotification = useCallback((notification: Notification) => {
     switch (notification.type) {
@@ -129,7 +121,8 @@ export function useNotifications() {
         },
         (payload) => {
           console.log('New notification:', payload)
-          setUnreadCount(prev => prev + 1)
+          // Reload notifications to get the complete data with joins
+          loadNotifications()
         }
       )
       .on(
@@ -141,13 +134,13 @@ export function useNotifications() {
         },
         (payload) => {
           console.log('Notification updated:', payload)
-          setNotifications(prev =>
-            prev.map(n =>
-              n.id === payload.new.id
-                ? { ...n, ...payload.new as Partial<Notification> }
-                : n
-            )
+          const updatedNotifications = notifications.map(n =>
+            n.id === payload.new.id
+              ? { ...n, ...payload.new as Partial<Notification> }
+              : n
           )
+          setNotifications(updatedNotifications)
+          calculateUnreadCount(updatedNotifications)
         }
       )
       .subscribe()
@@ -155,11 +148,12 @@ export function useNotifications() {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase])
+  }, [supabase, loadNotifications, notifications, calculateUnreadCount])
 
+  // Load notifications on mount
   useEffect(() => {
-    loadUnreadCount()
-  }, [loadUnreadCount])
+    loadNotifications()
+  }, [loadNotifications])
 
   return {
     notifications,
@@ -173,7 +167,6 @@ export function useNotifications() {
     navigateToNotification,
     refresh: () => {
       loadNotifications()
-      loadUnreadCount()
     }
   }
 }

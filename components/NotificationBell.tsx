@@ -94,6 +94,7 @@ export function NotificationBell() {
   const getUserDisplayName = (actor: Notification['actor']) => {
     return actor?.pseudo || 'Someone'
   }
+  console.log('Unread count:', unreadCount); // Add this line to debug
 
   return (
     <div className="relative">
@@ -105,7 +106,7 @@ export function NotificationBell() {
       >
         <Bell className="w-6 h-6" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg z-10 border-2 border-white pb-[1px] pl-[1px]">
             {unreadCount}
           </span>
         )}
