@@ -16,7 +16,7 @@ import MediaItem from "@/components/MediaItem";
 import useEditModal from "@/hooks/useEditModal";
 import useUploadModal from "@/hooks/useUploadModal";
 import useGetUserById from "@/hooks/useGetUserById";
-import useFollowModal from "@/hooks/useFollowingModal";
+import useFollowModal from "@/hooks/useFollowModal";
 import useFollowingModal from "@/hooks/useFollowingModal";
 
 

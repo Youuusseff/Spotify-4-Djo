@@ -1,4 +1,6 @@
 "use client";
+import useFollowingModal from "@/hooks/useFollowingModal";
+import useFollowModal from "@/hooks/useFollowingModal";
 import useLoadImage from "@/hooks/useLoadImage";
 import {PublicUserDetails, Song} from "@/types";
 import Image from "next/image";
@@ -12,6 +14,8 @@ interface MediaItemProps {
 const MediaItem: React.FC<MediaItemProps> = ({ data, onClick }) => {
 
     const router = useRouter();
+    const FollowModal = useFollowModal();
+    const FollowingsModal = useFollowingModal();
     
 
     const isSong = (data: Song | PublicUserDetails): data is Song => {
@@ -32,8 +36,12 @@ const MediaItem: React.FC<MediaItemProps> = ({ data, onClick }) => {
             return onClick(data.id);
             } 
             else {
-            // Navigate to user profile
-            router.push(`/profiles/${data.id}`);
+                if(FollowModal.isOpen || FollowingsModal.isOpen) {
+                    FollowModal.isOpen ? FollowModal.onClose() : FollowingsModal.onClose();
+                    router.push(`/profiles/${data.id}`);
+
+                }
+                router.push(`/profiles/${data.id}`);
             }
         }
     }
