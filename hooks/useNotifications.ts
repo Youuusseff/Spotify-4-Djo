@@ -11,6 +11,7 @@ export function useNotifications() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   const supabase = useSupabaseClient()
 
@@ -154,8 +155,19 @@ export function useNotifications() {
     }
   }, [Router, getSongIdFromCommentId])
 
+  // Get current user ID
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setCurrentUserId(user?.id || null)
+    }
+    getCurrentUser()
+  }, [supabase])
+
   // Fixed useEffect for real-time subscriptions
   useEffect(() => {
+    if (!currentUserId) return; // Don't subscribe until we have user ID
+
     const channel = supabase
       .channel('notifications')
       .on(
@@ -164,9 +176,10 @@ export function useNotifications() {
           event: 'INSERT',
           schema: 'public',
           table: 'notifications',
+          filter: `recipient_id=eq.${currentUserId}` // Only listen for current user's notifications
         },
         (payload) => {
-          console.log('New notification:', payload)
+          console.log('New notification for current user:', payload)
           // Reload notifications to get the complete data with joins
           loadNotifications()
         }
@@ -177,9 +190,10 @@ export function useNotifications() {
           event: 'UPDATE',
           schema: 'public',
           table: 'notifications',
+          filter: `recipient_id=eq.${currentUserId}` // Only listen for current user's notifications
         },
         (payload) => {
-          console.log('Notification updated:', payload)
+          console.log('Notification updated for current user:', payload)
           // Use functional update to avoid stale closure
           setNotifications(prevNotifications => {
             const updatedNotifications = prevNotifications.map(n =>
@@ -197,7 +211,7 @@ export function useNotifications() {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase, loadNotifications, calculateUnreadCount]) // Removed 'notifications' dependency
+  }, [supabase, loadNotifications, calculateUnreadCount, currentUserId]) // Added currentUserId dependency
 
   // Load notifications on mount
   useEffect(() => {
