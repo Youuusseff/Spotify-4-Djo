@@ -76,6 +76,8 @@ export function NotificationBell() {
 
   const getNotificationIcon = (notification: Notification) => {
     switch (notification.type) {
+      case 'user_follow':
+        return <User className="w-4 h-4 text-black" />
       case 'song_like':
         return <Heart className="w-4 h-4 text-red-500 fill-current" />
       case 'song_comment':

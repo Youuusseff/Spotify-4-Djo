@@ -14,8 +14,8 @@ export interface Notification {
   id: string
   recipient_id: string
   actor_id: string
-  type: 'song_comment' | 'comment_reply' | 'song_like' | 'comment_vote'
-  entity_type: 'song' | 'comment'
+  type: 'song_comment' | 'comment_reply' | 'song_like' | 'comment_vote' | 'user_follow'
+  entity_type: 'song' | 'comment' | 'user'
   entity_id: number // number to match your schema
   parent_entity_id?: number
   vote_value?: number // 1 for upvote, -1 for downvote

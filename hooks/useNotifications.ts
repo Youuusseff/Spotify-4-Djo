@@ -126,6 +126,7 @@ export function useNotifications() {
 
   const navigateToNotification = useCallback(async (notification: Notification) => {
     switch (notification.type) {
+      case 'user_follow':
       case 'song_like':
         Router.push(`/profiles/${notification.actor_id}`)
         break
