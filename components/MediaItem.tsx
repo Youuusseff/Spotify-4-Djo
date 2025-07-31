@@ -77,7 +77,7 @@ const MediaItem: React.FC<MediaItemProps> = ({ data, onClick }) => {
                         />
                     </div>
                     {isSong(data) && (
-                        <div className="flex flex-col gap-y-1 overflow-hidden">
+                        <div className="flex flex-col gap-y-1 w-full overflow-hidden">
                             <p className="text-white truncate">{data.title}</p>
                             <p className="text-neutral-400 text-sm truncate">{data.author}</p>
                         </div>

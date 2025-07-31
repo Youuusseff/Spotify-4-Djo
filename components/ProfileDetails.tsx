@@ -67,7 +67,7 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ user, songs }) => {
                         </div>
                         <div className="flex flex-col items-center hover:cursor-pointer" onClick={FollowingsModal.onOpen}>
                             <h4 className="text-white text-lg font-semibold">Following</h4>
-                            <p className="text-neutral-400">{user?.following || 0}</p>
+                            <p className="text-neutral-400">{followersCount ? user?.following || 0 : 0}</p>
                         </div>
                 </div>
                 
@@ -79,9 +79,9 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ user, songs }) => {
                     {songs.length} songs uploaded
                 </p>
                     {songs.length > 0 ? (
-                        <div className="flex flex-col gap-y-2 w-full px-6">
+                        <div className="flex flex-col gap-y-2 w-full md:px-6">
                             {songs.map((song) => (
-                                <div key={song.id} className="flex items-center gap-x-4 w-full">
+                                <div key={song.id} className="flex items-center gap-x-8 w-full">
                                     <div className="flex-1">
                                         <MediaItem 
                                             onClick={(id: string)=>onPlay(id)}
