@@ -21,7 +21,7 @@ const useGetUserById = (userId: string | undefined) => {
             
             if (error) {
                 setIsLoading(false);
-                return toast.error(error.message);
+                return;
             }
             setUser(data as PublicUserDetails);
             setIsLoading(false);

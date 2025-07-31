@@ -14,12 +14,9 @@ import { useUser } from "@/hooks/useUser";
 
 interface ModalProviderProps {
     products: ProductWithPrice[];
-    searchParams: Promise<{
-        title: string;
-    }>;
 }
 
-const ModalProvider: React.FC<ModalProviderProps> = ({ products, searchParams }) => {
+const ModalProvider: React.FC<ModalProviderProps> = ({ products }) => {
     const [isMounted, setIsMounted] = useState(false);
     const params = useParams(); // Get route parameters
     const { user } = useUser();

@@ -14,7 +14,7 @@ export function useNotifications() {
 
   const supabase = useSupabaseClient()
 
-  const getSongIdFromCommentId = async (commentId: string): Promise<string | null> => {
+  const getSongIdFromCommentId = useCallback(async (commentId: string): Promise<string | null> => {
     if (!commentId) return null;
     console.log('Fetching song ID for comment ID:', commentId)
     const { data } = await supabase
@@ -38,7 +38,7 @@ export function useNotifications() {
       }
     }
     return null
-  }
+  }, [supabase])
 
   // Calculate unread count from notifications array
   const calculateUnreadCount = useCallback((notificationsList: Notification[]) => {
@@ -78,19 +78,21 @@ export function useNotifications() {
         body: JSON.stringify({ notificationIds }),
       })
 
-      const updatedNotifications = notifications.map(n =>
-        notificationIds.includes(n.id)
-          ? { ...n, read: true }
-          : n
-      )
-      
-      setNotifications(updatedNotifications)
-      calculateUnreadCount(updatedNotifications)
+      // Use functional update to avoid stale closure
+      setNotifications(prevNotifications => {
+        const updatedNotifications = prevNotifications.map(n =>
+          notificationIds.includes(n.id)
+            ? { ...n, read: true }
+            : n
+        )
+        calculateUnreadCount(updatedNotifications)
+        return updatedNotifications
+      })
     } catch (err) {
       console.error('Error marking notifications as read:', err)
       setError('Failed to mark notifications as read')
     }
-  }, [notifications, calculateUnreadCount])
+  }, [calculateUnreadCount])
 
   const markAllAsRead = useCallback(async () => {
     try {
@@ -98,14 +100,17 @@ export function useNotifications() {
         method: 'POST',
       })
 
-      const updatedNotifications = notifications.map(n => ({ ...n, read: true }))
-      setNotifications(updatedNotifications)
-      setUnreadCount(0)
+      // Use functional update to avoid stale closure
+      setNotifications(prevNotifications => {
+        const updatedNotifications = prevNotifications.map(n => ({ ...n, read: true }))
+        setUnreadCount(0)
+        return updatedNotifications
+      })
     } catch (err) {
       console.error('Error marking all notifications as read:', err)
       setError('Failed to mark all notifications as read')
     }
-  }, [notifications])
+  }, [])
 
   const deleteNotificationById = useCallback(async (notificationId: string) => {
     try {
@@ -115,14 +120,17 @@ export function useNotifications() {
         body: JSON.stringify({ notificationId }),
       })
 
-      const updatedNotifications = notifications.filter(n => n.id !== notificationId)
-      setNotifications(updatedNotifications)
-      calculateUnreadCount(updatedNotifications)
+      // Use functional update to avoid stale closure
+      setNotifications(prevNotifications => {
+        const updatedNotifications = prevNotifications.filter(n => n.id !== notificationId)
+        calculateUnreadCount(updatedNotifications)
+        return updatedNotifications
+      })
     } catch (err) {
       console.error('Error deleting notification:', err)
       setError('Failed to delete notification')
     }
-  }, [notifications, calculateUnreadCount])
+  }, [calculateUnreadCount])
 
   const navigateToNotification = useCallback(async (notification: Notification) => {
     switch (notification.type) {
@@ -144,8 +152,9 @@ export function useNotifications() {
       default:
         console.warn('Unknown notification type:', notification.type)
     }
-  }, [])
+  }, [Router, getSongIdFromCommentId])
 
+  // Fixed useEffect for real-time subscriptions
   useEffect(() => {
     const channel = supabase
       .channel('notifications')
@@ -171,13 +180,16 @@ export function useNotifications() {
         },
         (payload) => {
           console.log('Notification updated:', payload)
-          const updatedNotifications = notifications.map(n =>
-            n.id === payload.new.id
-              ? { ...n, ...payload.new as Partial<Notification> }
-              : n
-          )
-          setNotifications(updatedNotifications)
-          calculateUnreadCount(updatedNotifications)
+          // Use functional update to avoid stale closure
+          setNotifications(prevNotifications => {
+            const updatedNotifications = prevNotifications.map(n =>
+              n.id === payload.new.id
+                ? { ...n, ...payload.new as Partial<Notification> }
+                : n
+            )
+            calculateUnreadCount(updatedNotifications)
+            return updatedNotifications
+          })
         }
       )
       .subscribe()
@@ -185,7 +197,7 @@ export function useNotifications() {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [supabase, loadNotifications, notifications, calculateUnreadCount])
+  }, [supabase, loadNotifications, calculateUnreadCount]) // Removed 'notifications' dependency
 
   // Load notifications on mount
   useEffect(() => {
@@ -207,4 +219,3 @@ export function useNotifications() {
     }
   }
 }
-

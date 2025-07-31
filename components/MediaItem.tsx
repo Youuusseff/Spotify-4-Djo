@@ -30,16 +30,18 @@ const MediaItem: React.FC<MediaItemProps> = ({ data, onClick }) => {
         if (onClick) {
             
             if (isSong(data)) {
-            // Handle song play logic here
-            
             console.log("Playing song:", data.title);
-            return onClick(data.id);
+            onClick(data.id);
+            router.push(`/threads/${data.id}`);
             } 
             else {
-                if(FollowModal.isOpen || FollowingsModal.isOpen) {
-                    FollowModal.isOpen ? FollowModal.onClose() : FollowingsModal.onClose();
+                if(FollowModal.isOpen) {
+                    FollowModal.onClose();
                     router.push(`/profiles/${data.id}`);
-
+                }
+                if(FollowingsModal.isOpen) {
+                    FollowingsModal.onClose();
+                    router.push(`/profiles/${data.id}`);
                 }
                 router.push(`/profiles/${data.id}`);
             }

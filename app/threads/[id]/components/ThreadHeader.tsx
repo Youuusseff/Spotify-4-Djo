@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { FaUserAlt } from "react-icons/fa";
 import { useUser } from "@/hooks/useUser";
 import { useEffect } from "react";
+import LikeButton from "@/components/LikeButton";
 
 interface ThreadHeaderProps {
     song: Song,
@@ -33,7 +34,7 @@ const ThreadHeader: React.FC<ThreadHeaderProps> = ({ song, public_user }) => {
     const imageUrl = useLoadImage(song) || "/images/liked.png";
 
     return(
-        <div className="flex justify-around items-center mt-10">
+        <div className="flex justify-around items-center mt-10 gap-x-4">
                     <div className="mb-2 flex flex-col flex-start gap-y-6">
                         <h1 className="text-white text-3xl font-semibold">
                             {song.title}
@@ -56,6 +57,7 @@ const ThreadHeader: React.FC<ThreadHeaderProps> = ({ song, public_user }) => {
                             <p className="text-sm text-neutral-400">uploaded at : {formattedDate}</p>
                         </div>
                     </div>
+                    <LikeButton songId={song.id}/>
                     <div className="px-6 mb-7  flex flex-col justify-center items-center gap-y-8">
                         <div className=" bg-neutral-400/5 hover:bg-neutral-400/10 relative aspect-square w-[100px] h-[100px] md:w-[200px] md:h-[200px] rounded-md overflow-hidden">
                             <Image

@@ -100,7 +100,7 @@ const Header: React.FC<HeaderProps>=({
                     justify-center
                     hover:opacity-75
                     transition"
-                    onClick={()=> router.push('/search')}>
+                    onClick={() => router.replace('/search')}>
                         <BiSearch size={20} className="text-black"/>
                     </button>
                 </div>

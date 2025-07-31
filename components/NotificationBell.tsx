@@ -96,7 +96,7 @@ export function NotificationBell() {
   }
 
   const getUserDisplayName = (actor: Notification['actor']) => {
-    return actor?.pseudo || 'Someone'
+    return actor?.pseudo
   }
   console.log('Unread count:', unreadCount); // Add this line to debug
 
@@ -159,7 +159,7 @@ export function NotificationBell() {
                 <div>{getNotificationIcon(notification)}</div>
                 <div className="flex-1">
                   <p className="text-sm text-gray-800">
-                    <span className="font-medium">
+                    <span className="font-bold">
                       {getUserDisplayName(notification.actor)}
                     </span>{' '}
                     {notification.message}
