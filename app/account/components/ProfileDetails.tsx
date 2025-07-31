@@ -33,8 +33,8 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
     const supabase = useSupabaseClient();
     const editModal = useEditModal();
     const uploadModal = useUploadModal();
-    const followersModal = useFollowModal();
-    const followingModal = useFollowingModal();
+    const FollowModal = useFollowModal();
+    const FollowingsModal = useFollowingModal();
     const getUserDetails = useGetUserById(user?.id);
     console.log("User Details:", getUserDetails.user?.followers);
 
@@ -137,11 +137,11 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ songs }) => {
 
                 </div>
                 <div className="flex items-center gap-x-4">
-                        <div className="flex flex-col items-center hover:cursor-pointer" onClick={followersModal.onOpen}>
+                        <div className="flex flex-col items-center hover:cursor-pointer" onClick={FollowModal.onOpen}>
                             <h4 className="text-white text-lg font-semibold">Followers</h4>
                             <p className="text-neutral-400">{getUserDetails.user?.followers || 0}</p>
                         </div>
-                        <div className="flex flex-col items-center hover:cursor-pointer" onClick={followingModal.onOpen}>
+                        <div className="flex flex-col items-center hover:cursor-pointer" onClick={FollowingsModal.onOpen}>
                             <h4 className="text-white text-lg font-semibold">Following</h4>
                             <p className="text-neutral-400">{getUserDetails.user?.following || 0}</p>
                         </div>
