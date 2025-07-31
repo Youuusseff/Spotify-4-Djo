@@ -22,6 +22,7 @@ export function NotificationBell() {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
+
   const {
     notifications,
     unreadCount,
@@ -48,6 +49,7 @@ export function NotificationBell() {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
 
   const handleBellClick = () => {
     setIsOpen(!isOpen)
@@ -105,8 +107,8 @@ export function NotificationBell() {
         className="relative p-2 text-white hover:text-gray-900"
       >
         <Bell className="w-6 h-6" />
-        {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg z-10 border-2 border-white pb-[1px] pl-[1px]">
+        { unreadCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg border-2 border-white pb-[1px] pl-[1px]">
             {unreadCount}
           </span>
         )}
