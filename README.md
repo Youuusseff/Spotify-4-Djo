@@ -1,22 +1,51 @@
-# 🎵 Djofy — Spotify Clone
+# 🎵 Djofy — Where Music Meets Community
 
-> A full-featured music streaming web app built with Next.js 15, Supabase, and Stripe.
+> **Spotify meets Reddit.** Djofy is a social music streaming platform where you stream, upload, and discuss music with a community — because the best way to experience music is together.
 
 🔗 **Live Demo:** [djofy.vercel.app](https://djofy.vercel.app)
 
 ---
 
+## 🧠 Concept
+
+Most streaming platforms are passive: you listen, you move on. **Djofy flips that.**
+
+Can't find a track? **Upload it** — and make it available for the whole community forever.  
+Found a hidden gem? **Share it**, and open a discussion thread so others can talk about it.  
+Want to discover what people are listening to? **Follow users** whose taste you trust.
+
+Djofy is built around the idea that music is social — every song is a conversation waiting to happen.
+
+---
+
 ## ✨ Features
 
-- 🎧 **Music Streaming** — Upload and stream songs directly in the browser
-- 🔐 **Authentication** — Secure sign-up / sign-in powered by Supabase Auth
-- 💳 **Stripe Subscriptions** — Premium plan billing with Stripe integration
-- ❤️ **Likes & Comments** — Like songs and leave threaded comments with up/down votes
-- 🔔 **Notifications** — Real-time notifications for follows, likes, comments, and replies
-- 👤 **User Profiles** — Public profiles with bio, avatar, follower/following counts
-- 🌐 **Public & Private Songs** — Control who can discover your uploads
-- 🔍 **Search** — Find songs and artists across the platform
-- 📱 **Responsive Design** — Mobile-friendly UI built with Tailwind CSS
+### 🎧 Streaming Mode *(Spotify-style)*
+- Upload and stream songs directly in the browser
+- Persistent audio player with playback controls
+- Browse and search the community's music library
+- Like songs and save them to your library
+
+### 🗨️ Thread Mode *(Reddit-style)*
+- Switch between **Stream mode** and **Thread mode** from the home page
+- In Thread mode, clicking a song plays it **and** opens its dedicated thread page
+- Each thread page shows:
+  - The song's cover art, title, and the uploader's avatar & username
+  - A Reddit-style discussion section with **upvotes / downvotes** on comments
+  - **Nested replies** with real-time **notifications** for interactions
+- Every song is both a track and a conversation
+
+### 👤 Social Layer
+- **Follow / Unfollow** users and build your musical network
+- Public **user profiles** with bio, avatar, follower & following counts
+- Notifications for new followers, replies, upvotes, and comments
+- Discover new music through the people you follow
+
+### 🔐 Auth & Platform
+- Secure authentication powered by **Supabase Auth**
+- **Stripe** subscription billing for premium plans
+- Upload your own songs with cover art — public or private
+- Fully **responsive** design for mobile and desktop
 
 ---
 
@@ -26,7 +55,7 @@
 |---|---|
 | Framework | [Next.js 15](https://nextjs.org) (App Router) |
 | Language | TypeScript |
-| Database & Auth | [Supabase](https://supabase.com) |
+| Database & Auth | [Supabase](https://supabase.com) (PostgreSQL + Storage) |
 | Payments | [Stripe](https://stripe.com) |
 | Styling | Tailwind CSS v4 |
 | UI Components | Radix UI, Lucide React, shadcn/ui |
@@ -42,8 +71,13 @@
 
 ```
 ├── app/              # Next.js App Router pages & API routes
-├── actions/          # Server actions
+│   ├── (site)/       # Main app pages (home, search, thread...)
+│   └── api/          # API routes (webhooks, etc.)
+├── actions/          # Server actions (upload, vote, follow...)
 ├── components/       # Reusable UI components
+│   ├── player/       # Audio player components
+│   ├── thread/       # Thread & comment components
+│   └── social/       # Follow, notifications, profile components
 ├── hooks/            # Custom React hooks
 ├── lib/              # Utility functions & helpers
 ├── libs/             # Third-party library wrappers (Supabase, Stripe)
@@ -130,6 +164,7 @@ The app is deployed on **Vercel**. To deploy your own instance:
 4. Deploy!
 
 For Stripe webhooks, set your webhook endpoint to:
+
 ```
 https://your-domain.vercel.app/api/webhooks
 ```
@@ -144,8 +179,8 @@ Contributions, issues, and feature requests are welcome! Feel free to open an is
 
 ## 📄 License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the [MIT License](./LICENSE).
 
 ---
 
-<p align="center">Made with ❤️ by <a href="https://github.com/Youuusseff">Youuusseff</a></p>
+Made with ❤️ by [Youuusseff](https://github.com/Youuusseff)
