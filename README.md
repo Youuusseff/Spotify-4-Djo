@@ -49,6 +49,38 @@ Djofy is built around the idea that music is social — every song is a conversa
 
 ---
 
+## 💳 Testing Stripe Subscriptions
+
+The app runs in **Stripe test mode**, so no real money is charged. Use the following test card to go through the full subscription flow.
+
+### Test Card Details
+
+| Field | Value |
+|---|---|
+| Card number | `4242 4242 4242 4242` |
+| Expiry date | Any future date (e.g. `12/34`) |
+| CVC | Any 3 digits (e.g. `123`) |
+| Name | Anything |
+| Billing address | Anything |
+
+### How to Subscribe
+
+1. Go to [djofy.vercel.app](https://djofy.vercel.app) and **sign in** (or create an account).
+2. Click the **Subscribe** button — it appears in the sidebar or when you try to access a premium feature.
+3. The Stripe checkout page will open. Enter the test card details above.
+4. Click **Subscribe** to confirm.
+5. You'll be redirected back to your account page with **Premium** active.
+
+### How to Cancel
+
+1. Go to your **Account** page.
+2. Click **Open customer portal**.
+3. Select **Cancel subscription** in the Stripe portal.
+
+> These are test credentials only. Switch Stripe to **Live mode** and replace the API keys in your environment variables before going to production.
+
+---
+
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
@@ -168,38 +200,6 @@ For Stripe webhooks, set your webhook endpoint to:
 ```
 https://your-domain.vercel.app/api/webhooks
 ```
-
----
-
-## 💳 Testing Stripe Subscriptions
-
-The app runs in **Stripe test mode**, so no real money is charged. Use the following test card to go through the full subscription flow.
-
-### Test Card Details
-
-| Field | Value |
-|---|---|
-| Card number | `4242 4242 4242 4242` |
-| Expiry date | Any future date (e.g. `12/34`) |
-| CVC | Any 3 digits (e.g. `123`) |
-| Name | Anything |
-| Billing address | Anything |
-
-### How to Subscribe
-
-1. Go to [djofy.vercel.app](https://djofy.vercel.app) and **sign in** (or create an account).
-2. Click the **Subscribe** button — it appears in the sidebar or when you try to access a premium feature.
-3. The Stripe checkout page will open. Enter the test card details above.
-4. Click **Subscribe** to confirm.
-5. You'll be redirected back to your account page with **Premium** active.
-
-### How to Cancel
-
-1. Go to your **Account** page.
-2. Click **Open customer portal**.
-3. Select **Cancel subscription** in the Stripe portal.
-
-> These are test credentials only. Switch Stripe to **Live mode** and replace the API keys in your environment variables before going to production.
 
 ---
 
