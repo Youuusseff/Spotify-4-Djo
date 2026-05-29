@@ -9,7 +9,7 @@ import { toDateTime } from "./helpers";
 
 export const supabaseAdmin = createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
-    process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY ?? ""
+    process.env.SUPABASE_SERVICE_ROLE_KEY ?? ""
 );
 
 const upsertProductRecord = async (product: Stripe.Product) => {
